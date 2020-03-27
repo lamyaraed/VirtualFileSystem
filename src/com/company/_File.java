@@ -1,60 +1,63 @@
-package com.company;
-
 import java.util.ArrayList;
 
-public class _File
+public class _File 
 {
-    private String filePath;
-    private ArrayList<Integer> allocatedBlocks = new ArrayList<Integer>();
-    private boolean deleted;
+	private String filePath;
+	private ArrayList<Integer> allocatedBlocks = new ArrayList<Integer>();
+	private boolean deleted;
+	
+	private int startIndex = -1;
+	private int size;
+	
+	public _File(int s) {
+		// TODO Auto-generated constructor stub
+		setSize(s);
+	}
+	
+	public _File(String Path , int s) {
+		// TODO Auto-generated constructor stub
+		filePath = Path;
+		size = s;
+	}
 
-    private int startIndex;
-    private int size;
+	public ArrayList<Integer> getAllocatedBlocks() {
+		return allocatedBlocks;
+	}
 
-    public _File(int start , int s) {
-        // TODO Auto-generated constructor stub
-        setStartIndex(start);
-        setSize(s);
-    }
+	public void setAllocatedBlocks(ArrayList<Integer> allocatedBlocks) {
+		this.allocatedBlocks = allocatedBlocks;
+	}
 
-    public ArrayList<Integer> getAllocatedBlocks() {
-        return allocatedBlocks;
-    }
+	public boolean isDeleted() {
+		return deleted;
+	}
 
-    public void setAllocatedBlocks(ArrayList<Integer> allocatedBlocks) {
-        this.allocatedBlocks = allocatedBlocks;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    public boolean isDeleted() {
-        return deleted;
-    }
+	public String getFilePath() {
+		return filePath;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
 
-    public String getFilePath() {
-        return filePath;
-    }
+	public int getStartIndex() {
+		return startIndex;
+	}
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
 
-    public int getStartIndex() {
-        return startIndex;
-    }
+	public int getSize() {
+		return size;
+	}
 
-    public void setStartIndex(int startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
+	public void setSize(int size) {
+		this.size = size;
+	}
 
 }
