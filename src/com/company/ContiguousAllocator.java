@@ -71,7 +71,7 @@ public class ContiguousAllocator implements DiskAllocator
 		
 		int startIndx = GetStartIndex(StartIndexes , blocksSize , file.getSize());
 			
-		if(startIndx !=-1)
+		if(startIndx !=-1) {
 			file.setStartIndex(startIndx);
 			for(int i = 0 ; i < file.getSize() ; i++)
 			{
@@ -79,6 +79,7 @@ public class ContiguousAllocator implements DiskAllocator
 				Blocks.set(startIndx+i,1);
 				file.getAllocatedBlocks().add(startIndx+i);
 			}
+		}
 		
 		return startIndx;
 	}
@@ -375,8 +376,10 @@ public class ContiguousAllocator implements DiskAllocator
 		
 		System.out.println("\n");
 		
-	//	VFS.CreateFile("root/folder2/DELETE", 3);
-		VFS.DeleteFile("root/folder2/DELETE");
+		//VFS.CreateFile("root/file1.txt", 6);
+	//	VFS.DeleteFile("root/file1.txt");
+		
+		VFS.CreateFile("root/BIGFILE.txt", 60);
 		
 		VFS.DisplayDiskStatus();
 		

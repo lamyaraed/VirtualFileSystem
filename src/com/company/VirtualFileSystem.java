@@ -37,12 +37,18 @@ public class VirtualFileSystem
 			file.setFilePath(Path);
 			file.setDeleted(false);	
 			
-			diskAllocator.allocateFile(file); // fill the blocks array in the file object
-			D.addFile(file);
-			
-			System.out.println("File Added");
-			
-			return true;
+			if(diskAllocator.allocateFile(file) != -1 )// fill the blocks array in the file object
+			{
+				//	diskAllocator.allocateFile(file); 
+				D.addFile(file);
+				System.out.println("File Added");
+				return true;
+			}
+			else
+			{
+				System.out.println("Can't add this file");
+				return false;
+			}
 		}
 		else
 		{
