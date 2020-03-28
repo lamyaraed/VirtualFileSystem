@@ -1,3 +1,5 @@
+package com.company;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -19,7 +21,7 @@ public class VirtualFileSystem
 		diskAllocator.SaveHardDisk(root);
 	}
 	
-	boolean CreateFile(String Path , int size) 
+	public boolean CreateFile(String Path, int size)
 	{
 		String[] pathRoot = Path.split("/");
 		
@@ -153,7 +155,7 @@ public class VirtualFileSystem
 		return false;
 	}
 	
-	void DisplayDiskStatus()
+	public void DisplayDiskStatus()
 	{
 		diskAllocator.DisplayDiskStatus();
 	}
