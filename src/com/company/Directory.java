@@ -1,3 +1,5 @@
+package com.company;
+
 import java.util.ArrayList;
 
 public class Directory 
@@ -19,8 +21,12 @@ public class Directory
 	 	printed to show its level in the structure 
 	 */
 	}
-	
 
+	Directory(){}
+
+	Directory(String name ){
+		directoryPath =  name;
+	}
 	public String getDirectoryPath() {
 		return directoryPath;
 	}
@@ -62,7 +68,14 @@ public class Directory
 	{
 		files.add(D);
 	}
-	
-	
+
+	public Directory getSubDirectory(String DirectoryName) {
+		for(int i = 0 ; i < subDirectories.size();i++) {
+			if(subDirectories.get(i).directoryPath.equals(DirectoryName))
+				return subDirectories.get(i);
+		}
+		System.out.println("No such Directory");
+		return null;
+	}
 	
 }

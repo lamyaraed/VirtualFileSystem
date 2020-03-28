@@ -1,3 +1,5 @@
+package com.company;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -77,6 +79,21 @@ public class VirtualFileSystem
 		return true;
 	}
 
+	private boolean checkForValidDirectoryPath(String path, Directory d)//todo 2oly l nada the change
+	{
+		if(d == null) {
+			//	System.out.println("Couldnot find the Directory " + path);
+			return false;
+		}
+
+		ArrayList<Directory> subDirectories =  d.getSubDirectories();
+
+		for(int i = 0 ; i < subDirectories.size() ; i++)
+			if(subDirectories.get(i).getDirectoryPath().equals(path))
+				return false;
+
+		return true;
+	}
 
 	private Directory GetDirectory(String direcoryPath , Directory root2) 
 	{	
@@ -141,18 +158,72 @@ public class VirtualFileSystem
 		System.out.println("Can not delete this file");
 		return false;
 	}
+	boolean CreateFolder(String Path)
+	{
 
-	boolean CreateFolder(String Path) 
-	{
-		return false;
-	
+		String[] pathRoot = Path.split("/");
+
+		String DirecoryPath = "";
+		for(int i = 0 ; i < pathRoot.length-1 ; i++)
+		{
+			DirecoryPath+=pathRoot[i]+"/";
+		}
+
+		Directory D =  GetDirectory(DirecoryPath , root);
+
+		if(checkForValidDirectoryPath(Path , D))
+		{
+			Directory dir = new Directory(); // create the file
+			dir.setDirectoryPath(Path);
+			dir.setDeleted(false);
+
+			D.addDirectory(dir);
+
+			System.out.println("Directory Added");
+
+			return true;
+		}
+		else
+		{
+			System.out.println("Directory with this name already exists");
+			return false;
+		}
 	}
-	
-	boolean DeleteFolder(String Path) 
+
+	boolean DeleteFolder(String Path)
 	{
+
+		String[] pathRoot = Path.split("/");
+
+		String DirecoryPath = "";
+		for(int i = 0 ; i < pathRoot.length-1 ; i++)
+		{
+			DirecoryPath+=pathRoot[i]+"/";
+		}
+
+		Directory D =  GetDirectory(DirecoryPath , root);
+
+		return	deleteDirectoryFromDirectory(Path , D);
+	}
+
+	private boolean deleteDirectoryFromDirectory(String path, Directory d)
+	{
+		ArrayList<Directory> directories = d.getSubDirectories();
+
+		for(int i = 0 ; i < directories.size() ; i++)
+		{
+			if(directories.get(i).getDirectoryPath().equals(path))
+			{
+				d.getSubDirectories().remove(directories.get(i));
+				System.out.println("Directory is deleted");
+				return true;
+			}
+		}
+
+		System.out.println("Can not delete this Directory, it doesnt exist!");
 		return false;
 	}
-	
+
 	void DisplayDiskStatus()
 	{
 		diskAllocator.DisplayDiskStatus();
@@ -165,5 +236,17 @@ public class VirtualFileSystem
 		 * This command will display the files and folders in your system file in a tree structure(root) 
 		 */
 	}
-
+/*
+*
+* public static void main(String[] args) {
+		IndexedAllocator IA = new IndexedAllocator(100);
+		VirtualFileSystem vf = new VirtualFileSystem(IA);
+		vf.DeleteFile("root/file3.txt");
+		vf.CreateFile("root/file3.txt" ,5);
+		vf.CreateFolder("root/folder1/folder5");
+		//vf.DeleteFolder("root/folder1/folder4")
+		vf.CloseFileSystem();
+		System.out.println("");
+	}
+* */
 }

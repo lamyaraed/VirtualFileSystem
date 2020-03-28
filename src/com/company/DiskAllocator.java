@@ -1,5 +1,6 @@
+package com.company;
 
-public interface DiskAllocator 
+public interface DiskAllocator
 {
 	void InitializeAllocator(int n); // set all blocks as an empty blocks
 	
