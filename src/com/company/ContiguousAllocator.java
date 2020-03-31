@@ -365,7 +365,7 @@ public class ContiguousAllocator implements DiskAllocator
 	}
 
 	
-	public static void main(String[] args) 
+	/*public static void main(String[] args)
 	{	
 	//	Directory root = new Directory();
 		ContiguousAllocator c = new ContiguousAllocator(100);
@@ -377,16 +377,16 @@ public class ContiguousAllocator implements DiskAllocator
 //			
 //		c.DisplayDiskStatus();
 		
-		VirtualFileSystem VFS = new VirtualFileSystem(c);
+		/*VirtualFileSystem VFS = new VirtualFileSystem(c);
 		
 		VFS.DisplayDiskStatus();
 		
-		System.out.println("\n");
+		System.out.println("\n");*/
 		
 		//VFS.CreateFile("root/file1.txt", 6);
 	//	VFS.DeleteFile("root/file1.txt");
 		
-		VFS.CreateFile("root/BIGFILE.txt", 60);
+	/*	VFS.CreateFile("root/BIGFILE.txt", 60);
 		
 		VFS.DisplayDiskStatus();
 		
@@ -407,7 +407,7 @@ public class ContiguousAllocator implements DiskAllocator
 		c.allocateFile(f5);
 		
 		c.DisplayDiskStatus();*/
-	}
+	//}
 
 	
 	/*

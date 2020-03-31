@@ -7,7 +7,7 @@ public class Parser {
     ArrayList<String> ParsedCommand;
     DiskAllocator AllocTech;
     VirtualFileSystem VFS;
-    public Parser(){}  ///empty constructor TODO to be deleted
+    //public Parser(){}  ///empty constructor TODO to be deleted
     public Parser(DiskAllocator Disk){
         this.VFS = new VirtualFileSystem(Disk);
     }
@@ -43,6 +43,8 @@ public class Parser {
             case "DisplayDiskStructure":
                 VFS.DisplayDiskStructure();
                 break;
+            case "exit":
+                VFS.CloseFileSystem();
         }
     }
 }

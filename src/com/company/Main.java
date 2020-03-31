@@ -7,28 +7,30 @@ import java.util.StringTokenizer;
 public class Main {
 
     public static void main(String[] args) {
-        Parser newPars = new Parser();
+        String path="root/";
+        Parser newPars =  null;
         Scanner input = new Scanner(System.in);
         int Alloc;
-       /* DiskAllocator myAlloc;
+        DiskAllocator myAlloc;
         System.out.println("How Would you like to allocate? \n 1.Contiguous Allocation \n 2.Indexed Allocation");
         Alloc = input.nextInt();
-       switch (Alloc){
+        System.out.println("How many blocks in your VFS?");
+        int blocks=0;
+        blocks = input.nextInt();
+        switch (Alloc){
             case 1:
-                myAlloc = new ContiguousAllocator(3);
+                myAlloc = new ContiguousAllocator(blocks);
                 newPars = new Parser(myAlloc);
                 break;
             case 2:
-                //myAlloc = new IndexedAllocator();
+                //myAlloc = new IndexedAllocator(blocks);
                 //newPars = new Parser(myAlloc);
                 break;
-            default:
-                myAlloc = new ContiguousAllocator(3);
-                newPars = new Parser(myAlloc);
-        }*/
+        }
 
         input = new Scanner(System.in);
         while(input.hasNext()){
+            System.out.print(path+"->");
             newPars.addCommand(input.nextLine());
         }
     }
