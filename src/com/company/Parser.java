@@ -45,6 +45,9 @@ public class Parser {
                 break;
             case "exit":
                 VFS.CloseFileSystem();
+                break;
+            default:
+                System.out.println("no such command");
         }
     }
 }

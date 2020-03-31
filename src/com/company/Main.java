@@ -27,11 +27,14 @@ public class Main {
                 //newPars = new Parser(myAlloc);
                 break;
         }
-
+        String command;
         input = new Scanner(System.in);
+        System.out.print(path+"->");
         while(input.hasNext()){
+            command = input.nextLine();
+            newPars.addCommand(command);
+            if(command.equals("exit"))break;
             System.out.print(path+"->");
-            newPars.addCommand(input.nextLine());
         }
     }
 }
