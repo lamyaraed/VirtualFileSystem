@@ -21,7 +21,7 @@ public class VirtualFileSystem
 		diskAllocator.SaveHardDisk(root);
 	}
 	
-	boolean CreateFile(String Path , int size) 
+	public boolean CreateFile(String Path, int size)
 	{
 		String[] pathRoot = Path.split("/");
 		
@@ -223,8 +223,7 @@ public class VirtualFileSystem
 		System.out.println("Can not delete this Directory, it doesnt exist!");
 		return false;
 	}
-
-	void DisplayDiskStatus()
+	public void DisplayDiskStatus()
 	{
 		diskAllocator.DisplayDiskStatus();
 	}

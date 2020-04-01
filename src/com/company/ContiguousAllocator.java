@@ -1,5 +1,9 @@
 package com.company;
 
+import com.company.Directory;
+import com.company.DiskAllocator;
+import com.company.VirtualFileSystem;
+import com.company._File;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,7 +16,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
-public class ContiguousAllocator implements DiskAllocator 
+public class ContiguousAllocator implements DiskAllocator
 {	
 	private ArrayList<Integer> Blocks = new ArrayList<Integer>();
 	
@@ -30,7 +34,7 @@ public class ContiguousAllocator implements DiskAllocator
 	}
 	
 	@Override
-	public int allocateFile(_File file) 
+	public int allocateFile(_File file)
 	{
 		if(file.getStartIndex()!=-1)
 		{
@@ -106,7 +110,7 @@ public class ContiguousAllocator implements DiskAllocator
 	}
 	
 	@Override
-	public void LoadHardDisk(Directory root) 
+	public void LoadHardDisk(Directory root)
 	{
 		LoadIndex = 1;
 		
@@ -360,7 +364,7 @@ public class ContiguousAllocator implements DiskAllocator
 	}
 
 	
-	public static void main(String[] args) 
+	/*public static void main(String[] args)
 	{	
 	//	Directory root = new Directory();
 		ContiguousAllocator c = new ContiguousAllocator(100);
@@ -372,16 +376,16 @@ public class ContiguousAllocator implements DiskAllocator
 //			
 //		c.DisplayDiskStatus();
 		
-		VirtualFileSystem VFS = new VirtualFileSystem(c);
+		/*VirtualFileSystem VFS = new VirtualFileSystem(c);
 		
 		VFS.DisplayDiskStatus();
 		
-		System.out.println("\n");
+		System.out.println("\n");*/
 		
 		//VFS.CreateFile("root/file1.txt", 6);
 	//	VFS.DeleteFile("root/file1.txt");
 		
-		VFS.CreateFile("root/BIGFILE.txt", 60);
+	/*	VFS.CreateFile("root/BIGFILE.txt", 60);
 		
 		VFS.DisplayDiskStatus();
 		
@@ -402,7 +406,7 @@ public class ContiguousAllocator implements DiskAllocator
 		c.allocateFile(f5);
 		
 		c.DisplayDiskStatus();*/
-	}
+	//}
 
 	
 	/*
