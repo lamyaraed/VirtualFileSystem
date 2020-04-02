@@ -166,7 +166,7 @@ public class IndexedAllocator implements DiskAllocator{
 
         saveFiles(root.getFiles());
         for(int i = 0 ; i < root.getSubDirectories().size();i++)
-            SaveHardDisk(rootDirectories.get(0));
+            SaveHardDisk(rootDirectories.get(i));
 
     }
     void saveFiles(ArrayList<_File> files){

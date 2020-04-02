@@ -250,3 +250,10 @@ public class VirtualFileSystem
 	}
 * */
 }
+/*root/->CreateFolder root/folder2
+Directory Added
+root/->CreateFolder root/folder2/folder3
+Directory Added
+root/->CreateFile root/folder2/folder3/file.txt 5
+File Added
+root/->DisplayDiskStructure*/
