@@ -207,13 +207,21 @@ public class IndexedAllocator implements DiskAllocator{
     @Override
     public void DisplayDiskStatus() {
         // TODO Auto-generated method stub
+        int nAllocated = 0 , nFreeSpace = 0;
         for(int i = 0 ; i < blocks.size() ; i++)
         {
             if(i%10 == 0)
                 System.out.println();
             System.out.print(blocks.get(i) + " ");
+            if(blocks.get(i)!=-1)
+                nAllocated++;
+            else
+                nFreeSpace++;
 
         }
+        System.out.println("\n\nNumber of allocated BLocks = " + nAllocated);
+        System.out.println("Number of Free BLocks = " + nFreeSpace);
+        System.out.println("Total number of blocks = " + blocks.size()  + "\n");
     }
 
 }
