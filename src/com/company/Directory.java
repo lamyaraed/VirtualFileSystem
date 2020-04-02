@@ -32,7 +32,7 @@ public class Directory
 		{
 			Directory temp = Directories.get(i);
 			for(int j = 0 ; j < level*2 ;j++) {
-				System.out.print(" ");
+				System.out.print("   ");
 			}
 			System.out.println(temp.getDirectoryPath());
 			level++;
@@ -47,7 +47,7 @@ public class Directory
 		for(int i = 0 ; i < files2.size() ; i++)
 		{
 			for(int j = 0 ; j < level*2 ;j++) {
-				System.out.print(" ");
+				System.out.print("   ");
 			}
 			System.out.println(files2.get(i).getFilePath());
 		}

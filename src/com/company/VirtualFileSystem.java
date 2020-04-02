@@ -11,7 +11,7 @@ public class VirtualFileSystem
 	public VirtualFileSystem(DiskAllocator disk)
 	{
 		root = new Directory();
-		root.setDirectoryPath("root/");
+		root.setDirectoryPath("root");
 		diskAllocator = disk;
 		diskAllocator.LoadHardDisk(root);
 	}
@@ -96,7 +96,7 @@ public class VirtualFileSystem
 	}
 
 	private Directory GetDirectory(String direcoryPath , Directory root2) 
-	{	
+	{
 		if((root2.getDirectoryPath()+"/").equals(direcoryPath))
 		{
 			
@@ -104,21 +104,22 @@ public class VirtualFileSystem
 		}
 		
 		ArrayList<Directory> directories = root2.getSubDirectories();
-		
+		Directory D = null;
 		for(int i = 0 ; i < directories.size() ; i++)
 		{
-			//System.out.println(directories.get(i).getDirectoryPath());
+			if(D!=null)break;
 			if((directories.get(i).getDirectoryPath()+"/").equals(direcoryPath))
 			{
-				return directories.get(i);
+				D =directories.get(i);
+				return D;
 			}
 			else 
 			{
-				GetDirectory(direcoryPath , directories.get(i)); 
+				D = GetDirectory(direcoryPath , directories.get(i));
 			}
 		}
 		
-		return null;
+		return D;
 	}
 
 

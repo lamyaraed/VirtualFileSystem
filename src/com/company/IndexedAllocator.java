@@ -12,6 +12,8 @@ public class IndexedAllocator implements DiskAllocator{
     private ArrayList<Integer> blocks = new ArrayList<Integer>();
     private HashMap<Integer, ArrayList<Integer>> IndexBlocks = new HashMap<Integer, ArrayList<Integer>>();
     private ArrayList<Pair> StoredFiles  = new ArrayList<Pair>();
+    private HashMap<String , Integer> StoredFilesToIndexFiles = new HashMap<String, Integer>();
+
     //private HashMap<String, Integer> StoredFiles = new HashMap<String, Integer>();
     String VFSPath = "VFSindexed.txt";
 
@@ -50,7 +52,8 @@ public class IndexedAllocator implements DiskAllocator{
                     return -1;
                 }
             }
-            StoredFiles.add(new Pair(file.getFilePath() , startIndex));
+           // StoredFiles.add(new Pair(file.getFilePath() , startIndex));
+            StoredFilesToIndexFiles.put(file.getFilePath() ,startIndex );
             file.setAllocatedBlocks(blocksForFile);
             file.setStartIndex(startIndex);
             IndexBlocks.put(startIndex, blocksForFile);
@@ -104,12 +107,11 @@ public class IndexedAllocator implements DiskAllocator{
                     }
                     else {
                         root.addDirectory(new Directory(filesFromSize[0]));
-                        StoredFiles.add(new Pair(filesFromSize[0] , -1));
                     }
                 }
                 else {
                     Directory cur = root;
-                    String CurPath = root.getDirectoryPath();
+                    String CurPath = root.getDirectoryPath() +'/';
                     for(int i = 1 ; i < files.length - 1 ; i++) {
                         cur = cur.getSubDirectory(CurPath + files[i]);
                         CurPath +=  files[i]  + "/";
@@ -120,7 +122,6 @@ public class IndexedAllocator implements DiskAllocator{
                     }
                     else {
                         cur.addDirectory(new Directory(filesFromSize[0]));
-                        StoredFiles.add(new Pair(filesFromSize[0] , -1));
                     }
                 }
 
@@ -131,6 +132,10 @@ public class IndexedAllocator implements DiskAllocator{
             e.printStackTrace();
         }
 
+
+        for(int i = 0 ; i < StoredFiles.size() ; i ++){
+            StoredFilesToIndexFiles.put(StoredFiles.get(i).path,StoredFiles.get(i).indexBlock);
+        }
 
     }
     void allocateFileFromDisk(String []arr , String name) {
@@ -151,22 +156,33 @@ public class IndexedAllocator implements DiskAllocator{
     public void SaveHardDisk(Directory root) {
         // TODO Auto-generated method stub
         String path;
-        clearFile();
-        for (int i = 0; i < StoredFiles.size(); i++) {
-            Pair P = StoredFiles.get(i);
-            path =P.path + " | " + P.indexBlock + " ";
-            if(P.indexBlock != -1)
-            {
-                ArrayList<Integer> allocatedBlocks = IndexBlocks.get(P.indexBlock);
-                for (int j = 0; j < allocatedBlocks.size(); j++) {
-                    path += allocatedBlocks.get(j) + " ";
-                }
-            }
+       if(root.getDirectoryPath().equals("root"))
+            clearFile();
+        else
+           AppendOnFile(root.getDirectoryPath() + " | -1");
 
-            //	System.out.println(path);
-            AppendOnFile(path);
-            path = "";
+        ArrayList<_File> rootFiles = root.getFiles();
+        ArrayList<Directory> rootDirectories = root.getSubDirectories();
+
+        saveFiles(root.getFiles());
+        for(int i = 0 ; i < root.getSubDirectories().size();i++)
+            SaveHardDisk(rootDirectories.get(0));
+
+    }
+    void saveFiles(ArrayList<_File> files){
+        for(int i = 0 ;i < files.size();i++){
+            saveFile(files.get(i).getFilePath());
         }
+    }
+    void saveFile(String path){
+        Integer indexFile =  StoredFilesToIndexFiles.get(path);
+        path = path  + " | "  + indexFile + " ";
+        ArrayList<Integer> allocatedBlocks = IndexBlocks.get(indexFile);
+        for (int j = 0; j < allocatedBlocks.size(); j++) {
+            path += allocatedBlocks.get(j) + " ";
+        }
+        AppendOnFile(path);
+        path = "";
     }
     void clearFile() {
         try{

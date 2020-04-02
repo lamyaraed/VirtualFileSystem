@@ -23,8 +23,8 @@ public class Main {
                 newPars = new Parser(myAlloc);
                 break;
             case 2:
-                //myAlloc = new IndexedAllocator(blocks);
-                //newPars = new Parser(myAlloc);
+                myAlloc = new IndexedAllocator(blocks);
+                newPars = new Parser(myAlloc);
                 break;
         }
         String command;
@@ -36,5 +36,7 @@ public class Main {
             if(command.equals("exit"))break;
             System.out.print(path+"->");
         }
+
+
     }
 }
