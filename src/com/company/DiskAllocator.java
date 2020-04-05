@@ -1,6 +1,4 @@
-package com.company;
-import com.company.Directory;
-import com.company._File;
+
 public interface DiskAllocator
 {
 	void InitializeAllocator(int n); // set all blocks as an empty blocks

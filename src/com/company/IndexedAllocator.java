@@ -1,9 +1,5 @@
-package com.company;
-import javax.print.DocFlavor;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -23,7 +19,6 @@ public class IndexedAllocator implements DiskAllocator{
     }
     @Override
     public void InitializeAllocator(int n) {
-        // TODO Auto-generated method stub
         for(int i = 0 ;i < n ; i++) {
             blocks.add(-1);
         }
@@ -69,7 +64,6 @@ public class IndexedAllocator implements DiskAllocator{
 
     @Override
     public void deAllocateFile(_File file) {
-        // TODO Auto-generated method stub
         int i;
         for(i = 0 ;i < StoredFiles.size();i++){
             if(StoredFiles.get(i).path.equals(file.getFilePath())){
@@ -85,8 +79,6 @@ public class IndexedAllocator implements DiskAllocator{
 
     @Override
     public void LoadHardDisk(Directory root) {
-        // TODO Auto-generated method stub
-
         File file = new File("VFSindexed2.txt");
 
         try {
