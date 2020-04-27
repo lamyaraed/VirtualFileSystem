@@ -1,6 +1,10 @@
+package ParserManagement;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import AllocationManagement.DiskAllocator;
+import VFileManagement.VirtualFileSystem;
 
 public class Parser {
     ArrayList<String> ParsedCommand;

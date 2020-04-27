@@ -1,7 +1,11 @@
+package AllocationManagement;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+
+import VFileManagement.Directory;
+import VFileManagement._File;
 
 public class IndexedAllocator implements DiskAllocator{
 
@@ -14,7 +18,7 @@ public class IndexedAllocator implements DiskAllocator{
     String VFSPath = "VFSindexed.txt";
 
 
-    IndexedAllocator(int n){
+    public IndexedAllocator(int n){
         InitializeAllocator(n);
     }
     @Override

@@ -1,11 +1,18 @@
+package VFileManagement;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import AllocationManagement.DiskAllocator;
+import UserManagement.Capability;
+import UserManagement.User;
+import UserManagement.UserManager;
 
 public class VirtualFileSystem 
 {
 	Directory root;
 	DiskAllocator diskAllocator;
+	
+	UserManager userManager;
 	
 	public VirtualFileSystem(DiskAllocator disk)
 	{
@@ -13,11 +20,14 @@ public class VirtualFileSystem
 		root.setDirectoryPath("root");
 		diskAllocator = disk;
 		diskAllocator.LoadHardDisk(root);
+		
+		userManager = new UserManager(root);		
 	}
 	
 	public void CloseFileSystem()
 	{
 		diskAllocator.SaveHardDisk(root);
+		userManager.SaveUsersToFile();
 	}
 	
 	public boolean CreateFile(String Path, int size)
@@ -40,7 +50,6 @@ public class VirtualFileSystem
 			
 			if(diskAllocator.allocateFile(file) != -1 )// fill the blocks array in the file object
 			{
-				//	diskAllocator.allocateFile(file); 
 				D.addFile(file);
 				System.out.println("File Added");
 				return true;
@@ -61,7 +70,6 @@ public class VirtualFileSystem
 	private boolean checkForValidDirectory(String path, Directory d) 
 	{
 		if(d == null) {
-		//	System.out.println("Couldnot find the Directory " + path);
 			return false;
 		}
 		ArrayList<_File> files = d.getFiles();
@@ -70,7 +78,6 @@ public class VirtualFileSystem
 		{
 			if(files.get(i).getFilePath().equals(path))
 			{
-				//System.out.println("Rename the file and save again");
 				return false;
 			}
 		}
@@ -81,7 +88,6 @@ public class VirtualFileSystem
 	private boolean checkForValidDirectoryPath(String path, Directory d)//todo 2oly l nada the change
 	{
 		if(d == null) {
-			//	System.out.println("Couldnot find the Directory " + path);
 			return false;
 		}
 
@@ -122,7 +128,7 @@ public class VirtualFileSystem
 	}
 
 
-	boolean DeleteFile(String Path) 
+	public boolean DeleteFile(String Path) 
 	{
 		
 		String[] pathRoot = Path.split("/");
@@ -158,7 +164,8 @@ public class VirtualFileSystem
 		System.out.println("Can not delete this file");
 		return false;
 	}
-	boolean CreateFolder(String Path)
+	
+	public boolean CreateFolder(String Path)
 	{
 
 		String[] pathRoot = Path.split("/");
@@ -190,7 +197,7 @@ public class VirtualFileSystem
 		}
 	}
 
-	boolean DeleteFolder(String Path)
+	public boolean DeleteFolder(String Path)
 	{
 
 		String[] pathRoot = Path.split("/");
@@ -228,31 +235,8 @@ public class VirtualFileSystem
 		diskAllocator.DisplayDiskStatus();
 	}
 	
-	void DisplayDiskStructure()
+	public void DisplayDiskStructure()
 	{
 		root.printDirectoryStructure(0);
-		/*
-		 * This command will display the files and folders in your system file in a tree structure(root) 
-		 */
 	}
-/*
-*
-* public static void main(String[] args) {
-		IndexedAllocator IA = new IndexedAllocator(100);
-		VirtualFileSystem vf = new VirtualFileSystem(IA);
-		vf.DeleteFile("root/file3.txt");
-		vf.CreateFile("root/file3.txt" ,5);
-		vf.CreateFolder("root/folder1/folder5");
-		//vf.DeleteFolder("root/folder1/folder4")
-		vf.CloseFileSystem();
-		System.out.println("");
-	}
-* */
 }
-/*root/->CreateFolder root/folder2
-Directory Added
-root/->CreateFolder root/folder2/folder3
-Directory Added
-root/->CreateFile root/folder2/folder3/file.txt 5
-File Added
-root/->DisplayDiskStructure*/
