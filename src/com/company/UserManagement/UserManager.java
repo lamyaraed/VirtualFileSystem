@@ -7,11 +7,17 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import AllocationManagement.ContiguousAllocator;
 import VFileManagement.Directory;
 import VFileManagement.VirtualFileSystem;
+import javafx.util.Pair;
 
 public class UserManager 
 {
@@ -149,7 +155,6 @@ public class UserManager
 		}
 	}
 	
-
 	/* save in Users file and Capabilities file*/
 	public void SaveUsersToFile()
 	{
@@ -159,62 +164,184 @@ public class UserManager
 		saveCapabilities();
 	}
 	
-	private void saveCapabilities() {
-		// TODO Auto-generated method stub
+	private void saveCapabilities() 
+	{
+		//String -> Directory Path
+		Map<String, ArrayList<Pair<User,Capability>>> DirUserCapabilityMap = new 
+									HashMap<String, ArrayList<Pair<User,Capability>>>();
 		
+		for(int i = 0 ; i < allUsers.size() ; i++)
+		{
+			User currUser = allUsers.get(i);
+			Map<Directory, Capability> Capabilities = currUser.getCapabilities();
+			
+			for (Map.Entry<Directory,Capability> entry : Capabilities.entrySet())
+			{
+				String DirectoryPath = entry.getKey().getDirectoryPath();
+				Capability capability = entry.getValue();
+				
+				ArrayList<Pair<User,Capability>> arrayList  = DirUserCapabilityMap.get(DirectoryPath);
+				
+				if(arrayList == null)
+				{
+					arrayList = new ArrayList<Pair<User,Capability>>();
+				}
+				
+				arrayList.add(new Pair<User, Capability>(currUser, capability));
+				DirUserCapabilityMap.put(DirectoryPath, arrayList);
+			}
+		}
+		
+		String Lines = "";
+		for (Map.Entry<String, ArrayList<Pair<User,Capability>>> entry : DirUserCapabilityMap.entrySet())
+		{
+			String DirectoryPath = entry.getKey();
+			ArrayList<Pair<User,Capability>> Users_capabilities = entry.getValue();
+			
+			Lines+=DirectoryPath + ",";
+			for(int i = 0 ; i < Users_capabilities.size() ; i++)
+			{
+				Pair<User,Capability> pair = Users_capabilities.get(i);
+				String capability = convertCapabilityToDigits(pair.getValue());
+				Lines+=pair.getKey() + "," + capability;
+				
+				if(i!=Users_capabilities.size()-1)
+				{
+					Lines+=",";
+				}
+			}
+			Lines+="\r\n";
+		}
+		
+		AppendOnFile("capabilities.txt", Lines);
 	}
 
-	private void saveUsers() {
-		// TODO Auto-generated method stub
+	private String convertCapabilityToDigits(Capability value) {
+		String result = null;
+		if(value == Capability.CREATE_DELETE)
+		{
+			result = "11";
+		}
+		else if(value == Capability.CREATE_ONLY)
+		{
+			result = "10";
+		}
+		else if(value == Capability.DELETE_ONLY)
+		{
+			result = "01";
+		}
+		else
+		{
+			result = "00";
+		}
 		
+		return result;
 	}
+
+	private void saveUsers() 
+	{
+		String Lines = "";
+		for(int i = 0 ; i < allUsers.size() ; i++)
+		{
+			Lines += allUsers.get(i).getName() + "," +allUsers.get(i).getPassword()+"\r\n";
+		}
+		AppendOnFile("user.txt" , Lines);
+	}
+	
+	private void AppendOnFile(String FilePath , String Lines)
+    {
+    	try {
+		    Files.write(Paths.get(FilePath), Lines.getBytes(), StandardOpenOption.APPEND);
+		}catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+    }
 
 	private void DeleteFile(String Path)
     {
     	try (FileChannel outChan = new FileOutputStream(new File(Path), true).getChannel()) {
     		  outChan.truncate(0);
     		} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 				System.out.println(e.getMessage());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
     }
 	
 	/*This command will display the name of the current logged in user.*/
 	public void TellUser()
 	{
-		
+		System.out.println( "Logged in user :  " + LoggedInUser);
 	}
 	
 	// return -1 if the user can not be created
 	/*Create object “User” and store this user in list of users.*/
-	public int CreateUser(User user)
+	public int CreateUser(String userName , String password)
 	{
-		return -1;
+		User check = getUser(userName);
+		if (check == null && LoggedInUser.getName().equals(Admin.getName()))
+		{
+			User user = new User(userName, password);
+			allUsers.add(user);
+			System.out.println(userName + " added successfully.");
+			return 1;
+		}
+		else {
+			System.out.println("You can not create this user");
+			return -1;
+		}
 	}
 	
 	// return -1 if the user not found
 	/*Get this user object from users list and edit its Capabilities*/
-	public int GrantUser(User user , Directory directory , Capability capability)
+	public int GrantUser(String userName , String directoryPath , Capability capability)
 	{
-		return -1;
+		Directory directory = root.getSubDirectory(directoryPath);
+		User user = getUser(userName);
+		if (user != null && directory != null && LoggedInUser.getName().equals(Admin.getName()))
+		{
+			user.setCapability(directory, capability);
+			System.out.println("User Capabilities edited successfully..");
+			return 1;
+		}
+		else {
+			System.out.println("There is no such user with this name");
+			return -1;
+		}
 	}
 	
 	// return -1 if the user not found
 	/*set this user as the logged in user*/
-	public int LoginUser(User user)
+	public int LoginUser(String userName , String password)
 	{
-		return -1;	
-	}
+		User user = getUser(userName);
+		if (user != null && password.equals(user.getPassword()))
+		{
+			LoggedInUser = user;
+			System.out.println("Logged in successfully");
+			return 1;
+		}
+		else {
+			System.out.println("You cann't logged in");
+			return -1;
+		}
+	}	
 	
 	// return -1 if the user not found	
 	/*Delete this user from the array*/
-	public int DeleteUser(User user)
+	public int DeleteUser(String userName)
 	{
-		return -1;
+		User check = getUser(userName);
+		if (check != null)
+		{
+			allUsers.remove(check);
+			System.out.println(userName + " removes successfully..");
+			return 1;
+		}
+		else { 
+			System.out.println("There is no such user with this name");
+			return -1;
+		}
 	}
 	
 	private static String ReadFile(String path)
@@ -238,10 +365,8 @@ public class UserManager
 				throw new FileNotFoundException();
 			}
 		} catch (FileNotFoundException e ) {
-			// TODO Auto-generated catch block
 			System.out.println("File Not Found");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
 		
@@ -249,14 +374,27 @@ public class UserManager
 	}
 	
 	
-	/*
 	public static void main(String[] args) {
 		ContiguousAllocator disk = new ContiguousAllocator(100); 
 		VirtualFileSystem vSystem = new VirtualFileSystem(disk);
 		
 		Directory d = vSystem.getRoot();
 		UserManager userManager = new UserManager(d);
+		userManager.TellUser();
+		
+	//	userManager.LoginUser("Ali", "pass789");
+		userManager.TellUser();
+		
+		userManager.CreateUser("Nada", "mypassword");
+		userManager.GrantUser("Nada", "root/folder2", Capability.CREATE_ONLY);
+		
+	//	userManager.DeleteUser("Nada");
+		userManager.SaveUsersToFile();
 	}
-    */
+	
+	/*
+	root/folder1,Ahmed,10,Mohamed,11
+	root/folder2,Ali,11
+	root/folder3,Ahmed,00*/
 }
 

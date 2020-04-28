@@ -11,6 +11,12 @@ public class User {
 	
 	private Map<Directory, Capability> capabilities = new HashMap<Directory, Capability>();
 
+	public User(String name, String password) 
+	{
+		this.name = name;
+		this.password = password;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -38,13 +44,18 @@ public class User {
 	public void setCapability(Directory file, Capability capability) {
 		capabilities.put(file, capability);
 	}
-
-	public User(String name, String password) 
-	{
-		this.name = name;
-		this.password = password;
-	}
 	
+	public Capability getCapability(String DirectoryPath)
+	{
+		for (Map.Entry<Directory,Capability> entry : capabilities.entrySet()) 
+		{
+			String temp = entry.getKey().getDirectoryPath();
+			if(temp.equals(DirectoryPath))
+				return entry.getValue();
+		}
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		String user = name;	
