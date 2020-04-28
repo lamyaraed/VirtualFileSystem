@@ -44,4 +44,17 @@ public class User {
 		this.name = name;
 		this.password = password;
 	}
+	
+	@Override
+	public String toString() {
+		String user = name;	
+		return user;
+	}
+	
+	public void printCapabilities()
+	{
+		for (Map.Entry<Directory,Capability> entry : capabilities.entrySet())  
+            System.out.println("Directory = " + entry.getKey() + 
+                             ", Capability = " + entry.getValue()); 
+	}
 }

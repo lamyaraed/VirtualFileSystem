@@ -1,0 +1,3 @@
+root/folder1,Ahmed,10,Mohamed,11
+root/folder2,Ali,11
+root/folder3,Ahmed,00

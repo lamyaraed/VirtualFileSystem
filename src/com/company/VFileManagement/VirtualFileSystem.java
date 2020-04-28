@@ -6,24 +6,24 @@ import UserManagement.UserManager;
 
 public class VirtualFileSystem 
 {
-	Directory root;
+	private Directory root;
 	DiskAllocator diskAllocator;
 	
 	UserManager userManager;
 	
 	public VirtualFileSystem(DiskAllocator disk)
 	{
-		root = new Directory();
-		root.setDirectoryPath("root");
+		setRoot(new Directory());
+		getRoot().setDirectoryPath("root");
 		diskAllocator = disk;
-		diskAllocator.LoadHardDisk(root);
+		diskAllocator.LoadHardDisk(getRoot());
 		
-		userManager = new UserManager(root);		
+		userManager = new UserManager(getRoot());		
 	}
 	
 	public void CloseFileSystem()
 	{
-		diskAllocator.SaveHardDisk(root);
+		diskAllocator.SaveHardDisk(getRoot());
 		userManager.SaveUsersToFile();
 	}
 	
@@ -37,7 +37,7 @@ public class VirtualFileSystem
 			DirecoryPath+=pathRoot[i]+"/";
 		}
 				
-		Directory D =  GetDirectory(DirecoryPath , root);
+		Directory D =  GetDirectory(DirecoryPath , getRoot());
 	
 		if(checkForValidDirectory(Path , D)) 
 		{
@@ -136,7 +136,7 @@ public class VirtualFileSystem
 			DirecoryPath+=pathRoot[i]+"/";
 		}
 				
-		Directory D =  GetDirectory(DirecoryPath , root);
+		Directory D =  GetDirectory(DirecoryPath , getRoot());
 		
 		return	deleteFileFromDirectory(Path , D);	
 	}
@@ -173,7 +173,7 @@ public class VirtualFileSystem
 			DirecoryPath+=pathRoot[i]+"/";
 		}
 
-		Directory D =  GetDirectory(DirecoryPath , root);
+		Directory D =  GetDirectory(DirecoryPath , getRoot());
 
 		if(checkForValidDirectoryPath(Path , D))
 		{
@@ -205,7 +205,7 @@ public class VirtualFileSystem
 			DirecoryPath+=pathRoot[i]+"/";
 		}
 
-		Directory D =  GetDirectory(DirecoryPath , root);
+		Directory D =  GetDirectory(DirecoryPath , getRoot());
 
 		return	deleteDirectoryFromDirectory(Path , D);
 	}
@@ -234,7 +234,15 @@ public class VirtualFileSystem
 	
 	public void DisplayDiskStructure()
 	{
-		root.printDirectoryStructure(0);
+		getRoot().printDirectoryStructure(0);
+	}
+
+	public Directory getRoot() {
+		return root;
+	}
+
+	public void setRoot(Directory root) {
+		this.root = root;
 	}
 	
 }

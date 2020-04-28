@@ -282,7 +282,7 @@ public class ContiguousAllocator implements DiskAllocator
 					 Lines+= line + '\n';
 				}
 				 
-				 System.out.println(Lines);
+				// System.out.println(Lines);
 			}
 			else
 			{

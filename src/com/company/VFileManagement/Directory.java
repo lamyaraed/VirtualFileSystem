@@ -109,5 +109,9 @@ public class Directory
 		return null;
 	}
 	
+	@Override
+	public String toString() {
+		return directoryPath; 
+	}
 }
 
