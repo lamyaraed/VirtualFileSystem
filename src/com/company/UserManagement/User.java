@@ -1,4 +1,5 @@
 package UserManagement;
+import java.util.HashMap;
 import java.util.Map;
 
 import VFileManagement.Directory;
@@ -7,7 +8,8 @@ public class User {
 	
 	private String name;
 	private String password;
-	private Map<Directory, Capability> capabilities;
+	
+	private Map<Directory, Capability> capabilities = new HashMap<Directory, Capability>();
 
 	public String getName() {
 		return name;
