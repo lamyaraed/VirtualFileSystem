@@ -1,3 +1,4 @@
+package AllocationManagement;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,7 +11,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
-public class ContiguousAllocator implements DiskAllocator 
+import VFileManagement.Directory;
+import VFileManagement._File;
+
+public class ContiguousAllocator implements DiskAllocator
 {	
 	private ArrayList<Integer> Blocks = new ArrayList<Integer>();
 	
@@ -27,7 +31,7 @@ public class ContiguousAllocator implements DiskAllocator
 	}
 	
 	@Override
-	public int allocateFile(_File file) 
+	public int allocateFile(_File file)
 	{
 		if(file.getStartIndex()!=-1)
 		{
@@ -62,6 +66,7 @@ public class ContiguousAllocator implements DiskAllocator
 		ArrayList<Integer> blocksSize = new ArrayList<Integer>();
 		
 		GetFreeBlocks(StartIndexes , blocksSize);
+
 		int startIndx = GetStartIndex(StartIndexes , blocksSize , file.getSize());
 			
 		if(startIndx !=-1) {
@@ -96,7 +101,7 @@ public class ContiguousAllocator implements DiskAllocator
 	}
 	
 	@Override
-	public void LoadHardDisk(Directory root) 
+	public void LoadHardDisk(Directory root)
 	{
 		LoadIndex = 1;
 		
@@ -206,7 +211,6 @@ public class ContiguousAllocator implements DiskAllocator
 			allocateFile(file);
 			
 			files.add(file);
-			
 		}
 	}
 	
@@ -315,7 +319,6 @@ public class ContiguousAllocator implements DiskAllocator
 		{
 			Directory subDirectory = Folders.get(i);
 			saveDisk(subDirectory);
-		//	SaveHardDisk(subDirectory);
 		}
 	}
 
@@ -327,19 +330,5 @@ public class ContiguousAllocator implements DiskAllocator
 			String Lines = file.getFilePath()+"-"+file.getStartIndex()+"-"+file.getSize()+"\r\n";
 			AppendOnFile(VFSPath, Lines);
 		}
-	}
-
-	
-	public static void main(String[] args) 
-	{	
-		ContiguousAllocator c = new ContiguousAllocator(100);
-	
-		VirtualFileSystem VFS = new VirtualFileSystem(c);
-		
-		VFS.DisplayDiskStatus();
-		
-		VFS.DisplayDiskStructure();
-		
-		VFS.CloseFileSystem();
 	}
 }
