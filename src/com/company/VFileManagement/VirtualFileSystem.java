@@ -2,6 +2,7 @@ package VFileManagement;
 
 import java.util.ArrayList;
 import AllocationManagement.DiskAllocator;
+import UserManagement.UserManagerUtil;
 import UserManagement.UserManager;
 
 public class VirtualFileSystem 
@@ -18,7 +19,7 @@ public class VirtualFileSystem
 		diskAllocator = disk;
 		diskAllocator.LoadHardDisk(getRoot());
 		
-		userManager = new UserManager(getRoot());		
+		userManager = new UserManagerUtil(getRoot());		
 	}
 	
 	public void CloseFileSystem()
@@ -227,6 +228,7 @@ public class VirtualFileSystem
 		System.out.println("Can not delete this Directory, it doesnt exist!");
 		return false;
 	}
+	
 	public void DisplayDiskStatus()
 	{
 		diskAllocator.DisplayDiskStatus();
