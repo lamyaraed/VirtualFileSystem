@@ -122,7 +122,7 @@ public class UserManagerUtil implements UserManager
 
 	}
 
-	private User getUser(String userName) 
+	public User getUser(String userName) 
 	{
 		for(int i = 0 ; i < allUsers.size() ; i++)
 		{

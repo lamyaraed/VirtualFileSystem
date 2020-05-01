@@ -5,7 +5,9 @@ import java.util.ArrayList;
 public interface UserManager {
 
 	ArrayList<User> getAllUsers();
-
+	
+	User getUser(String UserName);
+	
 	void setAllUsers(ArrayList<User> allUsers);
 
 	User getLoggedInUser();
