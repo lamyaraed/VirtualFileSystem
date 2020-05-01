@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import AllocationManagement.ContiguousAllocator;
 import VFileManagement.Directory;
-import javafx.util.Pair;
+import VFileManagement.VirtualFileSystem;
+//import javafx.util.Pair;
 
 public class UserManagerUtil implements UserManager
 {
@@ -160,8 +162,8 @@ public class UserManagerUtil implements UserManager
 	private void saveCapabilities() 
 	{
 		//String -> Directory Path
-		Map<String, ArrayList<Pair<User,Capability>>> DirUserCapabilityMap = new 
-									HashMap<String, ArrayList<Pair<User,Capability>>>();
+		Map<String, ArrayList<UserCapabilityPair>> DirUserCapabilityMap = new 
+									HashMap<String, ArrayList<UserCapabilityPair>>();
 		
 		for(int i = 0 ; i < allUsers.size() ; i++)
 		{
@@ -173,28 +175,28 @@ public class UserManagerUtil implements UserManager
 				String DirectoryPath = entry.getKey().getDirectoryPath();
 				Capability capability = entry.getValue();
 				
-				ArrayList<Pair<User,Capability>> arrayList  = DirUserCapabilityMap.get(DirectoryPath);
+				ArrayList<UserCapabilityPair> arrayList  = DirUserCapabilityMap.get(DirectoryPath);
 				
 				if(arrayList == null)
 				{
-					arrayList = new ArrayList<Pair<User,Capability>>();
+					arrayList = new ArrayList<UserCapabilityPair>();
 				}
 				
-				arrayList.add(new Pair<User, Capability>(currUser, capability));
+				arrayList.add(new UserCapabilityPair(currUser, capability));
 				DirUserCapabilityMap.put(DirectoryPath, arrayList);
 			}
 		}
 		
 		String Lines = "";
-		for (Map.Entry<String, ArrayList<Pair<User,Capability>>> entry : DirUserCapabilityMap.entrySet())
+		for (Map.Entry<String, ArrayList<UserCapabilityPair>> entry : DirUserCapabilityMap.entrySet())
 		{
 			String DirectoryPath = entry.getKey();
-			ArrayList<Pair<User,Capability>> Users_capabilities = entry.getValue();
+			ArrayList<UserCapabilityPair> Users_capabilities = entry.getValue();
 			
 			Lines+=DirectoryPath + ",";
 			for(int i = 0 ; i < Users_capabilities.size() ; i++)
 			{
-				Pair<User,Capability> pair = Users_capabilities.get(i);
+				UserCapabilityPair pair = Users_capabilities.get(i);
 				String capability = convertCapabilityToDigits(pair.getValue());
 				Lines+=pair.getKey() + "," + capability;
 				
@@ -371,7 +373,7 @@ public class UserManagerUtil implements UserManager
 		return Lines;
 	}
 	
-	/*
+	
 	public static void main(String[] args) {
 		ContiguousAllocator disk = new ContiguousAllocator(100); 
 		VirtualFileSystem vSystem = new VirtualFileSystem(disk);
@@ -386,7 +388,7 @@ public class UserManagerUtil implements UserManager
 		userManager.GrantUser("Nada", "root/folder2", Capability.CREATE_ONLY);
 		
 		userManager.SaveUsersToFile();
-	}*/
+	}
 
 }
 
