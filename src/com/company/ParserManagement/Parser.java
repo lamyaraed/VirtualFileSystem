@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import AllocationManagement.DiskAllocator;
+import UserManagement.UserManager;
 import VFileManagement.VirtualFileSystem;
 
 public class Parser {
     ArrayList<String> ParsedCommand;
     DiskAllocator AllocTech;
     VirtualFileSystem VFS;
+    UserManager UM;
     //public Parser(){}  ///empty constructor TODO to be deleted
     public Parser(DiskAllocator Disk){
         this.VFS = new VirtualFileSystem(Disk);
+        UM = VFS.getUserManager();
     }
     public void addCommand(String Command){
         String Cmd;
@@ -29,22 +32,53 @@ public class Parser {
         String Command = ParsedCommand.get(0);
         switch (Command){
             case "CreateFile":
-                VFS.CreateFile(ParsedCommand.get(1), Integer.parseInt(ParsedCommand.get(2)));
+                if(UM.HasCapabilityInDirectory(GetParentDirectory(ParsedCommand.get(1)),"CreateFile")) {
+                    VFS.CreateFile(ParsedCommand.get(1), Integer.parseInt(ParsedCommand.get(2)));
+                }
+                else
+                    System.out.println("Sorry you dont have permission to Create a File");
                 break;
             case "CreateFolder":
-                VFS.CreateFolder(ParsedCommand.get(1));
+                if(UM.HasCapabilityInDirectory(GetParentDirectory(ParsedCommand.get(1)),"CreateFolder")) {
+                    VFS.CreateFolder(ParsedCommand.get(1));
+                }
+                else
+                    System.out.println("Sorry you dont have permission to Create a Folder");
                 break;
             case "DeleteFile":
-                VFS.DeleteFile(ParsedCommand.get(1));
+                if(UM.HasCapabilityInDirectory(GetParentDirectory(ParsedCommand.get(1)),"DeleteFile")) {
+                    VFS.DeleteFile(ParsedCommand.get(1));
+                }
+                else
+                    System.out.println("Sorry you dont have permission to Delete a File");
                 break;
             case "DeleteFolder":
-                VFS.DeleteFolder(ParsedCommand.get(1));
+                if(UM.HasCapabilityInDirectory(GetParentDirectory(ParsedCommand.get(1)),"DeleteFolder")) {
+                    VFS.DeleteFolder(ParsedCommand.get(1));
+                }
+                else
+                    System.out.println("Sorry you dont have permission to Delete a FolderT");
                 break;
             case "DisplayDiskStatus":
                 VFS.DisplayDiskStatus();
                 break;
             case "DisplayDiskStructure":
                 VFS.DisplayDiskStructure();
+                break;
+            case "TellUser":
+                UM.TellUser();
+                break;
+            case "CreateUser" :
+                UM.CreateUser(ParsedCommand.get(1), ParsedCommand.get(2));
+                break;
+            case "DeleteUser":
+                UM.DeleteUser(ParsedCommand.get(1));
+                break;
+            case "Grant":
+                UM.GrantUser(ParsedCommand.get(1) ,ParsedCommand.get(2), ParsedCommand.get(3));
+                break;
+            case "Login":
+                UM.LoginUser(ParsedCommand.get(1), ParsedCommand.get(2));
                 break;
             case "exit":
                 VFS.CloseFileSystem();
@@ -53,4 +87,15 @@ public class Parser {
                 System.out.println("no such command");
         }
     }
+
+    String GetParentDirectory(String Path){
+        String[] Parsed = Path.split("/");
+        String ParentDirectoryPath = "";
+        for(int i = 0; i < Parsed.length - 1;i++){
+            ParentDirectoryPath+= Parsed[i];
+        }
+        System.out.println(ParentDirectoryPath);
+        return ParentDirectoryPath;
+    }
+
 }

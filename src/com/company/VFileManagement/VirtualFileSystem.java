@@ -9,9 +9,12 @@ public class VirtualFileSystem
 {
 	private Directory root;
 	DiskAllocator diskAllocator;
-	
 	UserManager userManager;
-	
+
+	public UserManager getUserManager() {
+		return userManager;
+	}
+
 	public VirtualFileSystem(DiskAllocator disk)
 	{
 		setRoot(new Directory());

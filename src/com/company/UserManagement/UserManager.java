@@ -26,12 +26,12 @@ public interface UserManager {
 	void TellUser();
 
 	// return -1 if the user can not be created
-	/*Create object “User” and store this user in list of users.*/
+	/*Create object ï¿½Userï¿½ and store this user in list of users.*/
 	int CreateUser(String userName, String password);
 
 	// return -1 if the user not found
 	/*Get this user object from users list and edit its Capabilities*/
-	int GrantUser(String userName, String directoryPath, Capability capability);
+	int GrantUser(String userName, String directoryPath, String Cap);
 
 	// return -1 if the user not found
 	/*set this user as the logged in user*/
@@ -41,4 +41,5 @@ public interface UserManager {
 	/*Delete this user from the array*/
 	int DeleteUser(String userName);
 
+    boolean HasCapabilityInDirectory(String Directory , String Command);
 }

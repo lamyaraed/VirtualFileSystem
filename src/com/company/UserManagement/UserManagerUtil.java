@@ -35,7 +35,8 @@ public class UserManagerUtil implements UserManager
 		Admin.setCapability(root,Capability.CREATE_DELETE);
 		LoggedInUser = Admin;
 		
-		LoadUserFromFile(); 
+		LoadUserFromFile();
+		allUsers.add(Admin);
 	}
 	
 	@Override
@@ -235,6 +236,8 @@ public class UserManagerUtil implements UserManager
 
 	private void saveUsers() 
 	{
+		allUsers.remove(Admin);
+
 		String Lines = "";
 		for(int i = 0 ; i < allUsers.size() ; i++)
 		{
@@ -271,7 +274,7 @@ public class UserManagerUtil implements UserManager
 	}
 	
 	// return -1 if the user can not be created
-	/*Create object “User” and store this user in list of users.*/
+	/*Create object ï¿½Userï¿½ and store this user in list of users.*/
 	@Override
 	public int CreateUser(String userName , String password)
 	{
@@ -292,8 +295,10 @@ public class UserManagerUtil implements UserManager
 	// return -1 if the user not found
 	/*Get this user object from users list and edit its Capabilities*/
 	@Override
-	public int GrantUser(String userName , String directoryPath , Capability capability)
+	public int GrantUser(String userName , String directoryPath , String Cap)
 	{
+		Capability capability  = getCapability(Cap);
+
 		Directory directory = root.getSubDirectory(directoryPath);
 		User user = getUser(userName);
 		if (user != null && directory != null && LoggedInUser.getName().equals(Admin.getName()))
@@ -321,7 +326,7 @@ public class UserManagerUtil implements UserManager
 			return 1;
 		}
 		else {
-			System.out.println("You cann't logged in");
+			System.out.println("You cannot log in");
 			return -1;
 		}
 	}	
@@ -372,8 +377,7 @@ public class UserManagerUtil implements UserManager
 		
 		return Lines;
 	}
-	
-	
+
 	public static void main(String[] args) {
 		ContiguousAllocator disk = new ContiguousAllocator(100); 
 		VirtualFileSystem vSystem = new VirtualFileSystem(disk);
@@ -381,13 +385,35 @@ public class UserManagerUtil implements UserManager
 		Directory d = vSystem.getRoot();
 		UserManager userManager = new UserManagerUtil(d);
 		userManager.TellUser();
-		
+
 		userManager.TellUser();
-		
-		userManager.CreateUser("Nada", "mypassword");
-		userManager.GrantUser("Nada", "root/folder2", Capability.CREATE_ONLY);
-		
+
+		userManager.CreateUser("Naddda", "mypasswddord");
+		userManager.GrantUser("Nada", "root/folder2", "01");
+
 		userManager.SaveUsersToFile();
+	}
+
+	@Override
+	public boolean HasCapabilityInDirectory(String Directory , String Command){
+		Capability capability = LoggedInUser.getCapability(Directory);
+		if(capability==null)
+			return false;
+		else{
+			if(Command.equals("CreateFile") || Command.equals("CreateFolder")){
+				if(capability.equals(Capability.CREATE_ONLY) || capability.equals(Capability.CREATE_DELETE))
+					return true;
+				else
+					return false;
+			}
+			else{
+				if(capability.equals(Capability.DELETE_ONLY) || capability.equals(Capability.CREATE_DELETE))
+					return true;
+				else
+					return false;
+			}
+
+		}
 	}
 
 }
