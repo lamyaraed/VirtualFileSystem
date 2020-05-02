@@ -1,3 +1,0 @@
-root/folder3,Ahmed,00
-root/folder2,Ali,11,Nada,01
-root/folder1,Ahmed,10,Mohamed,11

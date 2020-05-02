@@ -101,7 +101,7 @@ public class VirtualFileSystem
 		return true;
 	}
 
-	private Directory GetDirectory(String direcoryPath , Directory root2) 
+	static public Directory GetDirectory(String direcoryPath , Directory root2)
 	{
 		if((root2.getDirectoryPath()+"/").equals(direcoryPath))
 		{

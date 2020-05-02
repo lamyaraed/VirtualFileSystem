@@ -299,7 +299,7 @@ public class UserManagerUtil implements UserManager
 	{
 		Capability capability  = getCapability(Cap);
 
-		Directory directory = root.getSubDirectory(directoryPath);
+		Directory directory = VirtualFileSystem.GetDirectory(directoryPath , root);
 		User user = getUser(userName);
 		if (user != null && directory != null && LoggedInUser.getName().equals(Admin.getName()))
 		{

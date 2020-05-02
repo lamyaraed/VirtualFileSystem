@@ -46,18 +46,18 @@ public class Parser {
                     System.out.println("Sorry you dont have permission to Create a Folder");
                 break;
             case "DeleteFile":
-                if(UM.HasCapabilityInDirectory(GetParentDirectory(ParsedCommand.get(1)),"DeleteFile")) {
+                if(UM.HasCapabilityInDirectory(ParsedCommand.get(1),"DeleteFile")) {
                     VFS.DeleteFile(ParsedCommand.get(1));
                 }
                 else
                     System.out.println("Sorry you dont have permission to Delete a File");
                 break;
             case "DeleteFolder":
-                if(UM.HasCapabilityInDirectory(GetParentDirectory(ParsedCommand.get(1)),"DeleteFolder")) {
+                if(UM.HasCapabilityInDirectory(ParsedCommand.get(1),"DeleteFolder")) {
                     VFS.DeleteFolder(ParsedCommand.get(1));
                 }
                 else
-                    System.out.println("Sorry you dont have permission to Delete a FolderT");
+                    System.out.println("Sorry you dont have permission to Delete a Folder");
                 break;
             case "DisplayDiskStatus":
                 VFS.DisplayDiskStatus();
@@ -75,7 +75,7 @@ public class Parser {
                 UM.DeleteUser(ParsedCommand.get(1));
                 break;
             case "Grant":
-                UM.GrantUser(ParsedCommand.get(1) ,ParsedCommand.get(2), ParsedCommand.get(3));
+                UM.GrantUser(ParsedCommand.get(1) ,ParsedCommand.get(2) +"/", ParsedCommand.get(3));
                 break;
             case "Login":
                 UM.LoginUser(ParsedCommand.get(1), ParsedCommand.get(2));
@@ -90,11 +90,12 @@ public class Parser {
 
     String GetParentDirectory(String Path){
         String[] Parsed = Path.split("/");
-        String ParentDirectoryPath = "";
-        for(int i = 0; i < Parsed.length - 1;i++){
-            ParentDirectoryPath+= Parsed[i];
+        String ParentDirectoryPath = Parsed[0] ;
+
+        for(int i = 1; i < Parsed.length - 1;i++){
+            ParentDirectoryPath+= "/" +  Parsed[i];
         }
-        System.out.println(ParentDirectoryPath);
+       // System.out.println(ParentDirectoryPath);
         return ParentDirectoryPath;
     }
 
