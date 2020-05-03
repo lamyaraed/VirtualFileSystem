@@ -337,7 +337,7 @@ public class UserManagerUtil implements UserManager
 	public int DeleteUser(String userName)
 	{
 		User check = getUser(userName);
-		if (check != null)
+		if (check != null && LoggedInUser.getName().equals(Admin.getName()))
 		{
 			allUsers.remove(check);
 			System.out.println(userName + " removes successfully..");
