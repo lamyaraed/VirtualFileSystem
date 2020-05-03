@@ -308,7 +308,7 @@ public class UserManagerUtil implements UserManager
 			return 1;
 		}
 		else {
-			System.out.println("There is no such user with this name");
+			System.out.println("You can not get this user any capabilities");
 			return -1;
 		}
 	}
@@ -344,7 +344,7 @@ public class UserManagerUtil implements UserManager
 			return 1;
 		}
 		else { 
-			System.out.println("There is no such user with this name");
+			System.out.println("You Can not Delete This User");
 			return -1;
 		}
 	}
@@ -376,22 +376,6 @@ public class UserManagerUtil implements UserManager
 		}
 		
 		return Lines;
-	}
-
-	public static void main(String[] args) {
-		ContiguousAllocator disk = new ContiguousAllocator(100); 
-		VirtualFileSystem vSystem = new VirtualFileSystem(disk);
-		
-		Directory d = vSystem.getRoot();
-		UserManager userManager = new UserManagerUtil(d);
-		userManager.TellUser();
-
-		userManager.TellUser();
-
-		userManager.CreateUser("Naddda", "mypasswddord");
-		userManager.GrantUser("Nada", "root/folder2", "01");
-
-		userManager.SaveUsersToFile();
 	}
 
 	@Override
