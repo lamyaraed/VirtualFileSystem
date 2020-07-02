@@ -1,3 +1,6 @@
+package AllocationManagement;
+import VFileManagement.Directory;
+import VFileManagement._File;
 
 public interface DiskAllocator
 {

@@ -1,3 +1,4 @@
+package AllocationManagement;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+
+import VFileManagement.Directory;
+import VFileManagement._File;
 
 public class ContiguousAllocator implements DiskAllocator
 {	
@@ -24,7 +28,6 @@ public class ContiguousAllocator implements DiskAllocator
 		{
 			Blocks.add(-1);
 		}
-		//DeleteFile(VFSPath);
 	}
 	
 	@Override
@@ -63,19 +66,13 @@ public class ContiguousAllocator implements DiskAllocator
 		ArrayList<Integer> blocksSize = new ArrayList<Integer>();
 		
 		GetFreeBlocks(StartIndexes , blocksSize);
-		/*
-		for(int i = 0 ; i<StartIndexes.size() ; i++)
-		{
-			System.out.println("start :" + StartIndexes.get(i) + " size = " + blocksSize.get(i));
-		}*/
-		
+
 		int startIndx = GetStartIndex(StartIndexes , blocksSize , file.getSize());
 			
 		if(startIndx !=-1) {
 			file.setStartIndex(startIndx);
 			for(int i = 0 ; i < file.getSize() ; i++)
 			{
-		//		System.out.println("SET BLOCKS");
 				Blocks.set(startIndx+i,1);
 				file.getAllocatedBlocks().add(startIndx+i);
 			}
@@ -110,9 +107,6 @@ public class ContiguousAllocator implements DiskAllocator
 		
 		String VFSContent = ReadFile(VFSPath);
 		VFSContentList = VFSContent.split("\n"); 
-	
-		//System.out.println("\n\n\n" + VFSContentList[0]);
-		
 		String[] rootParamters = VFSContentList[0].split("-");
 		
 		String rootPath = rootParamters[0];
@@ -179,12 +173,8 @@ public class ContiguousAllocator implements DiskAllocator
 
 	private void loadDirectories(ArrayList<Directory> subDirectories, int nDirectory, int startIndex) 
 	{
-//		if(nDirectory>0)
-//			System.out.println("start Loading " + nDirectory +" Folders" + "\n");
-		
 		for(int i = 0 ; i < nDirectory ; i++)
 		{
-//			System.out.println("start loading folder at " + startIndex);
 			String[] directoryParamters = VFSContentList[startIndex++].split("-");
 			String directoryPath = directoryParamters[0];
 			int nFiles = Integer.parseInt(directoryParamters[1]);
@@ -195,24 +185,17 @@ public class ContiguousAllocator implements DiskAllocator
 			subDirectory.setDirectoryPath(directoryPath);
 			loadFiles(subDirectory.getFiles(), nFiles, startIndex);
 
-//			if(nFiles>0)
-//			System.out.println("done loading files at the folder that is at : " + (startIndex-1));
-			
 			startIndex+=nFiles;
 			loadDirectories(subDirectory.getSubDirectories(), nSubDirectory, startIndex);
 			startIndex+=nSubDirectory;
 			
 			subDirectories.add(subDirectory);
 			
-//			System.out.println("done saving folder at : " + (startIndex-nFiles-nSubDirectory-1));
 		}
 	}
 
 	private void loadFiles(ArrayList<_File> files, int nFiles, int startIndex) 
 	{
-//		if(nFiles>0)
-//		System.out.println("Start Loading FIles at : " + startIndex +"\n");
-
 		for(int i = 0 ; i < nFiles ; i++)
 		{
 			String[] FileParameters = VFSContentList[startIndex+i].split("-");
@@ -228,8 +211,6 @@ public class ContiguousAllocator implements DiskAllocator
 			allocateFile(file);
 			
 			files.add(file);
-			
-//			System.out.println(filePath + "  done at index " + (startIndex+i) + "  nF " + nFiles);
 		}
 	}
 	
@@ -256,12 +237,7 @@ public class ContiguousAllocator implements DiskAllocator
 			blocksSize.add(Cnt);
 			
 			Cnt =0;
-		}/*
-		if(Cnt == Blocks.size()) // all blocks is  free
-		{
-			startIndexes.add(0);
-			blocksSize.add(Blocks.size());
-		}*/
+		}
 	}
 	
 	private int GetStartIndex(ArrayList<Integer> startIndexes, 
@@ -306,7 +282,7 @@ public class ContiguousAllocator implements DiskAllocator
 					 Lines+= line + '\n';
 				}
 				 
-				 System.out.println(Lines);
+				// System.out.println(Lines);
 			}
 			else
 			{
@@ -343,7 +319,6 @@ public class ContiguousAllocator implements DiskAllocator
 		{
 			Directory subDirectory = Folders.get(i);
 			saveDisk(subDirectory);
-		//	SaveHardDisk(subDirectory);
 		}
 	}
 
@@ -356,67 +331,4 @@ public class ContiguousAllocator implements DiskAllocator
 			AppendOnFile(VFSPath, Lines);
 		}
 	}
-
-	
-	/*public static void main(String[] args)
-	{	
-	//	Directory root = new Directory();
-		ContiguousAllocator c = new ContiguousAllocator(100);
-
-//		c.LoadHardDisk(root);
-//		
-//		c.VFSPath = "new.txt";
-//		c.SaveHardDisk(root);
-//			
-//		c.DisplayDiskStatus();
-		
-		/*VirtualFileSystem VFS = new VirtualFileSystem(c);
-		
-		VFS.DisplayDiskStatus();
-		
-		System.out.println("\n");*/
-		
-		//VFS.CreateFile("root/file1.txt", 6);
-	//	VFS.DeleteFile("root/file1.txt");
-		
-	/*	VFS.CreateFile("root/BIGFILE.txt", 60);
-		
-		VFS.DisplayDiskStatus();
-		
-		VFS.CloseFileSystem();
-		
-		
-		/*
-		_File f1 = new _File(3);
-		_File f2 = new _File(6);
-		_File f3 = new _File(5);
-		_File f4 = new _File(5);
-		_File f5 = new _File(5);
-		
-		c.allocateFile(f1);
-		c.allocateFile(f2);
-		c.allocateFile(f3);
-		c.allocateFile(f4);
-		c.allocateFile(f5);
-		
-		c.DisplayDiskStatus();*/
-	//}
-
-	
-	/*
-	 * 
-	 * 
-	 *	root-3-3
-			root/file1-0-3
-			root/file2-3-6
-			root/file3-12-5
-			root/folder1-0-0
-			root/folder1-2-0
-				root/folder1/file4-17-3
-				root/folder1/file5-30-5
-			root/folder1-1-1
-				root/folder1/file6-40-5
-				root/folder1/folder4-0-0
-	 * 
-	 */
 }

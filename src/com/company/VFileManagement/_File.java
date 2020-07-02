@@ -1,3 +1,4 @@
+package VFileManagement;
 
 import java.util.ArrayList;
 
@@ -61,4 +62,8 @@ public class _File
 		this.size = size;
 	}
 
+	@Override
+	public String toString() {
+		return filePath;
+	}
 }

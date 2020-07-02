@@ -1,3 +1,4 @@
+package VFileManagement;
 
 import java.util.ArrayList;
 
@@ -52,9 +53,9 @@ public class Directory
 		}
 	}
 
-	Directory(){}
+	public Directory(){}
 
-	Directory(String name ){
+	public Directory(String name ){
 		directoryPath =  name;
 	}
 	public String getDirectoryPath() {
@@ -108,5 +109,9 @@ public class Directory
 		return null;
 	}
 	
+	@Override
+	public String toString() {
+		return directoryPath; 
+	}
 }
 

@@ -1,9 +1,10 @@
+package ParserManagement;
+
 import java.util.Scanner;
 
 import AllocationManagement.ContiguousAllocator;
 import AllocationManagement.DiskAllocator;
 import AllocationManagement.IndexedAllocator;
-import ParserManagement.Parser;
 
 public class Main {
 
